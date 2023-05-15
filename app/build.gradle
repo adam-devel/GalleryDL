@@ -5,12 +5,13 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id "org.jetbrains.kotlin.plugin.serialization" version "1.8.10"
+    id 'com.chaquo.python'
 }
 
 def properties = new Properties()
 
 android {
-    namespace 'com.deniscerri.ytdlnis'
+    namespace 'it.matteoleggio.gallerydl'
     compileSdk 33
 
     try {
@@ -19,18 +20,15 @@ android {
             properties.load(new FileInputStream(propertiesFile))
 
             properties.load(new FileInputStream(propertiesFile))
-            signingConfigs {
-                debug {
-                    storeFile file(properties["signingConfig.storeFile"])
-                    storePassword properties["signingConfig.storePassword"]
-                    keyAlias properties["signingConfig.keyAlias"]
-                    keyPassword properties["signingConfig.keyPassword"]
-                }
-            }
         }
     }catch(IOException ignored){}
     defaultConfig {
-        applicationId "com.deniscerri.ytdl"
+        python {
+            pip {
+                install "gallery-dl"
+            }
+        }
+        applicationId "it.matteoleggio.gallerydl"
         minSdk 23
         targetSdk 33
         versionCode project.versionCode
@@ -179,4 +177,5 @@ dependencies {
     implementation "com.google.android.exoplayer:exoplayer:2.18.6"
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 }

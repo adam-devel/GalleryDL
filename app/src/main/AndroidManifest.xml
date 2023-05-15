@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest package="it.matteoleggio.gallerydl"
+ 	 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:requestLegacyExternalStorage="true">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -27,7 +28,6 @@
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
@@ -52,84 +52,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="application/txt" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".receiver.ShareActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.BottomSheet">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.downloadLogs.DownloadLogListActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.downloadLogs.DownloadLogListActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.downloads.DownloadQueueActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.DownloadQueueActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.downloadLogs.DownloadLogActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".ui.more.downloadLogs.DownloadLogListActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.downloadLogs.DownloadLogActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.settings.SettingsActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.settings.SettingsActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.more.TerminalActivity"
-            android:configChanges="smallestScreenSize|layoutDirection|locale|orientation|screenSize"
-            android:exported="true"
-            android:label="@string/terminal"
-            android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="ytdlnis.TerminalActivity" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
@@ -210,7 +132,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.deniscerri.ytdl.fileprovider"
+            android:authorities="it.matteoleggio.gallerydl.fileprovider"
             android:exported="false"
             android:enabled="true"
             android:grantUriPermissions="true">

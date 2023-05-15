@@ -100,7 +100,7 @@
     </com.google.android.material.search.SearchView>
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/home_appbarlayout"
+        android:id="@+id/topbar"
         app:liftOnScroll="true"
         android:background="@null"
         android:elevation="0dp"

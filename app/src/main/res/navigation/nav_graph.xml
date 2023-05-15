@@ -8,59 +8,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.deniscerri.ytdlnis.ui.HomeFragment"
+        android:name="it.matteoleggio.gallerydl.ui.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.deniscerri.ytdlnis.ui.downloads.HistoryFragment"
-        android:label="@string/downloads"
-        tools:layout="@layout/fragment_history" >
-        <action
-            android:id="@+id/action_historyFragment_to_downloadQueueActivity"
-            app:destination="@id/downloadQueueActivity" />
-    </fragment>
-    <fragment
         android:id="@+id/moreFragment"
-        android:name="com.deniscerri.ytdlnis.ui.more.MoreFragment"
+        android:name="it.matteoleggio.gallerydl.ui.more.MoreFragment"
         android:label="More"
         tools:layout="@layout/fragment_more" >
         <action
-            android:id="@+id/action_moreFragment_to_terminalActivity"
-            app:destination="@id/terminalActivity" />
-        <action
             android:id="@+id/action_moreFragment_to_cookiesActivity"
             app:destination="@id/cookiesActivity" />
-        <action
-            android:id="@+id/action_moreFragment_to_downloadQueueActivity"
-            app:destination="@id/downloadQueueActivity" />
-        <action
-            android:id="@+id/action_moreFragment_to_downloadLogListActivity"
-            app:destination="@id/downloadLogListActivity" />
         <action
             android:id="@+id/action_moreFragment_to_commandTemplatesActivity"
             app:destination="@id/commandTemplatesActivity" />
     </fragment>
     <activity
-        android:id="@+id/downloadQueueActivity"
-        android:name="com.deniscerri.ytdlnis.ui.downloads.DownloadQueueActivity"
-        android:label="DownloadQueueActivity"
-        tools:layout="@layout/activity_download_queue" />
-    <activity
-        android:id="@+id/downloadLogListActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.downloadLogs.DownloadLogListActivity"
-        android:label="DownloadLogListActivity" />
-    <activity
         android:id="@+id/commandTemplatesActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.CommandTemplatesActivity"
+        android:name="it.matteoleggio.gallerydl.ui.more.CommandTemplatesActivity"
         android:label="CommandTemplatesActivity" />
     <activity
         android:id="@+id/cookiesActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.CookiesActivity"
+        android:name="it.matteoleggio.gallerydl.ui.more.CookiesActivity"
         android:label="CookiesActivity" />
-    <activity
-        android:id="@+id/terminalActivity"
-        android:name="com.deniscerri.ytdlnis.ui.more.TerminalActivity"
-        android:label="activity_terminal"
-        tools:layout="@layout/activity_terminal" />
 </navigation>
