@@ -1,21 +1,12 @@
 package it.matteoleggio.gallerydl
 
 import android.app.Application
-import android.app.UiModeManager.MODE_NIGHT_NO
-import android.app.UiModeManager.MODE_NIGHT_YES
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import it.matteoleggio.gallerydl.util.NotificationUtil
-import it.matteoleggio.gallerydl.util.UpdateUtil
-import com.google.android.material.color.DynamicColors
-import com.google.android.material.snackbar.Snackbar
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL

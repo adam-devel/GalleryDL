@@ -10,7 +10,6 @@ import androidx.core.content.FileProvider
 import it.matteoleggio.gallerydl.R
 import it.matteoleggio.gallerydl.receiver.CancelDownloadNotificationReceiver
 import it.matteoleggio.gallerydl.receiver.PauseDownloadNotificationReceiver
-import it.matteoleggio.gallerydl.receiver.ResumeActivity
 import it.matteoleggio.gallerydl.receiver.SharedDownloadNotificationReceiver
 import java.io.File
 
@@ -129,16 +128,6 @@ class NotificationUtil(var context: Context) {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .clearActions()
 
-        val intent = Intent(context, ResumeActivity::class.java)
-        intent.putExtra("workID", workID)
-        val resumeNotificationPendingIntent = PendingIntent.getActivity(
-            context,
-            workID,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        notificationBuilder.addAction(0, context.getString(R.string.resume), resumeNotificationPendingIntent)
         notificationManager.notify(DOWNLOAD_RESUME_NOTIFICATION_ID, notificationBuilder.build())
     }
 

@@ -35,9 +35,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
-import it.matteoleggio.gallerydl.database.viewmodel.CookieViewModel
-import it.matteoleggio.gallerydl.database.viewmodel.DownloadViewModel
-import it.matteoleggio.gallerydl.database.viewmodel.ResultViewModel
 import it.matteoleggio.gallerydl.ui.BaseActivity
 import it.matteoleggio.gallerydl.ui.HomeFragment
 import it.matteoleggio.gallerydl.util.ThemeUtil
@@ -54,9 +51,6 @@ class MainActivity : BaseActivity() {
 
     lateinit var context: Context
     private lateinit var preferences: SharedPreferences
-    private lateinit var resultViewModel: ResultViewModel
-    private lateinit var cookieViewModel: CookieViewModel
-    private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var navigationView: View
     private lateinit var navHostFragment : NavHostFragment
 
@@ -66,9 +60,6 @@ class MainActivity : BaseActivity() {
         ThemeUtil.updateTheme(this)
         setContentView(R.layout.activity_main)
         context = baseContext
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         askPermissions()
@@ -108,18 +99,6 @@ class MainActivity : BaseActivity() {
         if (navigationView is NavigationBarView){
             (navigationView as NavigationBarView).selectedItemId = graph.startDestinationId
             (navigationView as NavigationBarView).setupWithNavController(navController)
-
-            val activeDownloadsBadge = (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
-            downloadViewModel.activeDownloadsCount.observe(this){
-                if (it == 0) {
-                    activeDownloadsBadge.isVisible = false
-                    activeDownloadsBadge.clearNumber()
-                }
-                else {
-                    activeDownloadsBadge.isVisible = true
-                    activeDownloadsBadge.number = it
-                }
-            }
             window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         }
         if (navigationView is NavigationView){
@@ -154,7 +133,6 @@ class MainActivity : BaseActivity() {
                 true
             }
         }
-        cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
     }

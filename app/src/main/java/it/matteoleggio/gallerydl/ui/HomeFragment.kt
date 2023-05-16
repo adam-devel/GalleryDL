@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.widget.*
@@ -15,8 +14,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,35 +21,22 @@ import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.navigation.NavigationView
 import it.matteoleggio.gallerydl.MainActivity
 import it.matteoleggio.gallerydl.R
-import it.matteoleggio.gallerydl.adapter.HomeAdapter
-import it.matteoleggio.gallerydl.database.models.ResultItem
-import it.matteoleggio.gallerydl.database.viewmodel.DownloadViewModel
-import it.matteoleggio.gallerydl.database.viewmodel.ResultViewModel
 import it.matteoleggio.gallerydl.databinding.FragmentHomeBinding
-import it.matteoleggio.gallerydl.util.FileUtil
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 import kotlin.concurrent.thread
 
 
-class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListener {
+class HomeFragment : Fragment(), OnClickListener {
     private var inputQueries: MutableList<String>? = null
-    private var homeAdapter: HomeAdapter? = null
 
     private var searchSuggestions: ScrollView? = null
     private var searchSuggestionsLinearLayout: LinearLayout? = null
     private var searchHistory: ScrollView? = null
     private var searchHistoryLinearLayout: LinearLayout? = null
-
-    private var downloadQueue: ArrayList<ResultItem>? = null
-
-    private lateinit var resultViewModel : ResultViewModel
-    private lateinit var downloadViewModel : DownloadViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -65,9 +49,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     private var queriesChipGroup: ChipGroup? = null
     private var recyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
-    private var resultsList: List<ResultItem?>? = null
-    private var selectedObjects: ArrayList<ResultItem>? = null
-    private var fileUtil: FileUtil? = null
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var _binding : FragmentHomeBinding? = null
@@ -90,15 +71,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
 
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
-        fileUtil = FileUtil()
         uiHandler = Handler(Looper.getMainLooper())
-        selectedObjects = ArrayList()
-
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-
-        downloadQueue = ArrayList()
-        resultsList = mutableListOf()
-        selectedObjects = ArrayList()
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
@@ -112,11 +85,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         searchHistory = view.findViewById(R.id.search_history_scroll_view)
         searchHistoryLinearLayout = view.findViewById(R.id.search_history_linear_layout)
 
-        homeAdapter =
-            HomeAdapter(
-                this,
-                requireActivity()
-            )
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE && ! resources.getBoolean(R.bool.isTablet)){
             recyclerView?.layoutManager = GridLayoutManager(context, 2)
@@ -125,7 +93,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         okButton!!.setOnClickListener {
             thread(start = true) {
                 try {
-                    if (searchBar!!.text.toString().isNullOrBlank()) {
+                    if (searchBar!!.text.toString().isBlank()) {
                         return@thread
                     }
                     Handler(Looper.getMainLooper()).post {
@@ -211,28 +179,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     fun scrollToTop() {
         recyclerView!!.scrollToPosition(0)
         (searchBar!!.parent as AppBarLayout).setExpanded(true, true)
-    }
-
-    override fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
-        TODO("Not yet implemented")
-    }
-
-
-    override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
-        Log.e(TAG, type.toString() + " " + videoURL)
-        val item = resultsList!!.find { it?.url == videoURL }
-    }
-
-    override fun onCardClick(videoURL: String, add: Boolean) {
-        TODO("Not yet implemented")
-    }
-
-    private fun clearCheckedItems(){
-        homeAdapter?.clearCheckedItems()
-        selectedObjects?.forEach {
-            homeAdapter?.notifyItemChanged(resultsList!!.indexOf(it))
-        }
-        selectedObjects?.clear()
     }
 
 
