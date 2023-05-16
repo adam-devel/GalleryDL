@@ -151,6 +151,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
     }
 
     private fun actuallyDownload(downloader: PyObject, url: String, progress: ProgressBar, n: Int) {
+        Runtime.getRuntime().exec("logcat -c")
         val process = Runtime.getRuntime().exec("logcat")
         val bufferedReader = BufferedReader(
             InputStreamReader(process.inputStream)
@@ -169,6 +170,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
             requireView().findViewById<TextView>(R.id.progress_text)!!.text =
                 "Downloaded ${progress.progress} / $n images!"
         }
+        Runtime.getRuntime().exec("logcat -c")
     }
 
     fun handleFileIntent(lines: List<String>) {
