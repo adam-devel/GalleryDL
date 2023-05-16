@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ import com.chaquo.python.PyObject
 import com.chaquo.python.Python
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.navigation.NavigationView
 import it.matteoleggio.gallerydl.MainActivity
 import it.matteoleggio.gallerydl.R
 import it.matteoleggio.gallerydl.adapter.HomeAdapter
@@ -123,7 +125,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
         okButton!!.setOnClickListener {
             thread(start = true) {
                 try {
+                    if (searchBar!!.text.toString().isNullOrBlank()) {
+                        return@thread
+                    }
                     Handler(Looper.getMainLooper()).post {
+                        mainActivity!!.changeNavbarVisibility(INVISIBLE)
+                        requireView().findViewById<TextView>(R.id.success).visibility = INVISIBLE
+                        okButton!!.text = "Wait..."
+                        okButton!!.isEnabled = false
+                        view.findViewById<TextView>(R.id.progress_text).visibility = VISIBLE
                         view.findViewById<TextView>(R.id.progress_text).text =
                             "Looking up images!"
                     }
@@ -131,19 +141,40 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, OnClickListene
                     val downloader = py.getModule("gallery_dl_util")
                     val URLs = downloader.callAttr("metadata", searchBar!!.text.toString()).repr().toInt()
                     val progress = view.findViewById<ProgressBar>(R.id.progress_bar)
-                    Handler(Looper.getMainLooper()).post {
-                        progress.visibility = VISIBLE
-                        progress.max = URLs
-                        view.findViewById<TextView>(R.id.progress_text).text =
-                            "Downloaded 0 / $URLs images!"
-                        view.findViewById<TextView>(R.id.progress_text).visibility = VISIBLE
+                    var resultView: TextView? = null
+                    if (URLs > 0) {
+                        Handler(Looper.getMainLooper()).post {
+                            progress.visibility = VISIBLE
+                            progress.max = URLs
+                            view.findViewById<TextView>(R.id.progress_text).text =
+                                "Downloaded 0 / $URLs images!"
+                            view.findViewById<TextView>(R.id.progress_text).visibility = VISIBLE
+                        }
+                        actuallyDownload(downloader, searchBar!!.text.toString(), progress, URLs)
+                        resultView = view.findViewById(R.id.success)
+                    } else {
+                        resultView = view.findViewById(R.id.fail)
                     }
-                    actuallyDownload(downloader, searchBar!!.text.toString(), progress, URLs)
                     Handler(Looper.getMainLooper()).post {
                         progress.visibility = INVISIBLE
                         progress.progress = 0
                         view.findViewById<TextView>(R.id.progress_text).visibility = INVISIBLE
+                        okButton!!.isEnabled = true
+                        okButton!!.text = "Download"
+                        resultView.visibility = VISIBLE
+                        mainActivity!!.changeNavbarVisibility(VISIBLE)
                     }
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        {
+                            while (true) {
+                                try {
+                                    resultView.visibility = GONE
+                                    break
+                                } catch (_: Exception) {}
+                            }
+                        },
+                        5000
+                    )
                 } catch (ignored: Exception) {}
             }
         }

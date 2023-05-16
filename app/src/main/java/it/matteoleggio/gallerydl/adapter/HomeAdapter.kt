@@ -161,7 +161,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
     interface OnItemClickListener {
         fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?)
-        fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?)
+        fun onLongButtonClick(videoURL  : String, type: DownloadViewModel.Type?)
         fun onCardClick(videoURL: String, add: Boolean)
     }
 

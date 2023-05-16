@@ -10,8 +10,11 @@ def download(url, uid):
     print(f"--FINISHED DOWNLOADING {uid}--")
 
 def metadata(url):
-    f = io.StringIO()
-    with redirect_stdout(f):
-        job.UrlJob(url).run()
-    s = f.getvalue()
-    return len(s.split("\n"))
+    try:
+        f = io.StringIO()
+        with redirect_stdout(f):
+            job.UrlJob(url).run()
+        s = f.getvalue()
+        return len(s.split("\n"))
+    except:
+        return -1

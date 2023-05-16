@@ -2,7 +2,7 @@
 <resources>
     <string name="worst_quality">Worst Quality</string>
     <string name="best_quality">Best Quality</string>
-    <string name="app_name" translatable="false">GalleryDL</string>
+    <string name="app_name" translatable="false">Gallery Downloader</string>
     <string name="search">Search</string>
     <string name="remove_all">Remove All</string>
     <string name="remove_results">Clear Results</string>

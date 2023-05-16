@@ -30,6 +30,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.navigation.NavigationBarView
@@ -305,6 +306,11 @@ class MainActivity : BaseActivity() {
         }
         dialog.show()
     }
+
+    public fun changeNavbarVisibility(vis: Int) {
+        navigationView.findViewById<BottomNavigationView>(R.id.bottomNavigationView).visibility = vis
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         startActivity(Intent(this, MainActivity::class.java))
         super.onConfigurationChanged(newConfig)

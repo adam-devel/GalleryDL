@@ -27,7 +27,71 @@
 
 
             <TextView
-                android:id="@+id/about1"
+                android:id="@+id/how"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="35dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:text="How to Use"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_edit" />
+
+            <TextView
+                android:id="@+id/how_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="35dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif-thin"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:text="Simply grab the link of the images you want to download, paste it in the app and press download!"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/empty" />
+
+            <TextView
+                android:id="@+id/sites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="35dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:text="Supported Sites"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/baseline_download_24" />
+
+            <TextView
+                android:id="@+id/sites_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawablePadding="35dp"
+                android:focusable="true"
+                android:fontFamily="sans-serif-thin"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="15dp"
+                android:text="4chan\n500px\n8chan\nArtStation\nBBC\nCatbox\nDeviantart\nGelbooru\nGfycat\nImgur\nInstagram\nItch.io\nPinterest\nPixiv\nReddit\nTumblr\nTwitter\nImgbb\nUnsplash\nWallpaper Cave\n\n...And many more!"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/empty" />
+
+            <TextView
+                android:id="@+id/about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
