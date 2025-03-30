@@ -3,29 +3,66 @@ name: Android CI
 on:
   push:
     branches: [ "main" ]
+    tags: [ "*" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'corretto'
-        cache: gradle
+      # Checkout the repository code
+      - uses: actions/checkout@v3
 
-    - uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: 7.5
-    - name: Create Properties File
-      run: touch local.properties
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+      # Set up JDK 17 for Android builds
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          cache: gradle
+
+      # Set up Gradle
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 7.5
+
+      # Create a local.properties file (required by some Android projects)
+      - name: Create Properties File
+        run: touch local.properties
+
+      # Grant execute permission to gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # Generate a random keystore for release builds (only on tag pushes)
+      - name: Generate Random Keystore
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          # Generate random passwords and alias using openssl
+          STORE_PASSWORD=$(openssl rand -base64 12)
+          KEY_PASSWORD=$(openssl rand -base64 12)
+          KEY_ALIAS="alias_$(openssl rand -hex 4)"
+          
+          # Create a new keystore with random credentials
+          keytool -genkey -v -keystore keystore.jks -keyalg RSA -keysize 2048 -validity 10000 \
+            -alias "$KEY_ALIAS" -storepass "$STORE_PASSWORD" -keypass "$KEY_PASSWORD" \
+            -dname "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, S=Unknown, C=Unknown"
+          
+          # Output keystore details to environment variables for Gradle to use
+          echo "KEYSTORE_PATH=${{ github.workspace }}/keystore.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=$STORE_PASSWORD" >> $GITHUB_ENV
+          echo "KEY_ALIAS=$KEY_ALIAS" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=$KEY_PASSWORD" >> $GITHUB_ENV
+
+      # Build the project with Gradle
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      # Create a GitHub release and upload the signed APK (only on tag pushes)
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/*.apk
